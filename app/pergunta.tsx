@@ -1,8 +1,9 @@
 import { useState } from "react";
-import { View, Text, TouchableOpacity, TextInput, StyleSheet, Alert } from "react-native";
+import { View, Text, TouchableOpacity, TextInput, StyleSheet, Alert, ScrollView } from "react-native";
 import { router, useLocalSearchParams } from "expo-router";
 import { collection, addDoc, Timestamp } from "firebase/firestore";
 import { db, auth } from "../firebaseConfig";
+import { Ionicons } from "@expo/vector-icons";
 
 const motivos = ["Sobrecarga de trabalho", "Prazos", "Liderança", "Relacionamento com a equipe", "Questões pessoais", "Outro"];
 
@@ -32,65 +33,148 @@ export default function Pergunta() {
   }
 
   return (
-    <View style={styles.container}>
+    <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
+      <TouchableOpacity onPress={() => router.back()} style={styles.botaoVoltarTopo} activeOpacity={0.8}>
+        <Ionicons name="arrow-back" size={24} color="#1E293B" />
+      </TouchableOpacity>
+
       <Text style={styles.titulo}>O que mais contribuiu para o seu dia?</Text>
 
       <View style={styles.opcoes}>
-        {motivos.map((motivo) => (
-          <TouchableOpacity
-            key={motivo}
-            style={[styles.opcao, motivoSelecionado === motivo && styles.opcaoSelecionada]}
-            onPress={() => setMotivoSelecionado(motivo)}
-          >
-            <Text style={[styles.opcaoTexto, motivoSelecionado === motivo && styles.opcaoTextoSelecionado]}>
-              {motivo}
-            </Text>
-          </TouchableOpacity>
-        ))}
+        {motivos.map((motivo) => {
+          const ehSelecionado = motivoSelecionado === motivo;
+          return (
+            <TouchableOpacity
+              key={motivo}
+              style={[styles.opcao, ehSelecionado && styles.opcaoSelecionada]}
+              onPress={() => setMotivoSelecionado(motivo)}
+              activeOpacity={0.8}
+            >
+              <Text style={[styles.opcaoTexto, ehSelecionado && styles.opcaoTextoSelecionado]}>
+                {motivo}
+              </Text>
+            </TouchableOpacity>
+          );
+        })}
       </View>
 
       <TextInput
         style={styles.comentario}
         placeholder="Quer comentar mais alguma coisa? (opcional)"
-        placeholderTextColor="#999"
+        placeholderTextColor="#94A3B8"
         value={comentario}
         onChangeText={setComentario}
         multiline
-        numberOfLines={3}
+        numberOfLines={4}
       />
 
       <TouchableOpacity
         style={[styles.botao, !motivoSelecionado && styles.botaoDesabilitado]}
         onPress={handleEnviar}
         disabled={!motivoSelecionado || enviando}
+        activeOpacity={0.8}
       >
         <Text style={styles.botaoTexto}>{enviando ? "Enviando..." : "Enviar"}</Text>
       </TouchableOpacity>
-    </View>
+    </ScrollView>
   );
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, padding: 24, paddingTop: 72, backgroundColor: "#F5F3FF" },
-  titulo: { fontSize: 19, fontFamily: "Poppins_600SemiBold", color: "#333", marginBottom: 24, textAlign: "center" },
-  opcoes: { gap: 10, marginBottom: 20 },
-  opcao: {
-    backgroundColor: "#fff", borderRadius: 14, paddingVertical: 14, paddingHorizontal: 18,
-    borderWidth: 2, borderColor: "#fff",
-    shadowColor: "#000", shadowOpacity: 0.04, shadowRadius: 6, shadowOffset: { width: 0, height: 2 }, elevation: 1,
+  container: { 
+    flex: 1, 
+    backgroundColor: "#F8FAFC" 
   },
-  opcaoSelecionada: { borderColor: "#6D28D9", backgroundColor: "#EDE9FE" },
-  opcaoTexto: { fontSize: 14, fontFamily: "Poppins_400Regular", color: "#333" },
-  opcaoTextoSelecionado: { color: "#6D28D9", fontFamily: "Poppins_600SemiBold" },
+  contentContainer: {
+    padding: 24,
+    paddingTop: 60,
+    paddingBottom: 40,
+  },
+  botaoVoltarTopo: {
+    marginBottom: 20,
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    backgroundColor: "#FFFFFF",
+    justifyContent: "center",
+    alignItems: "center",
+    borderWidth: 1,
+    borderColor: "#E2E8F0",
+  },
+  titulo: { 
+    fontSize: 22, 
+    fontFamily: "Poppins_700Bold", 
+    color: "#1E293B", 
+    marginBottom: 24, 
+    textAlign: "left" 
+  },
+  opcoes: { 
+    gap: 12, 
+    marginBottom: 20 
+  },
+  opcao: {
+    backgroundColor: "#FFFFFF", 
+    borderRadius: 20, 
+    paddingVertical: 16, 
+    paddingHorizontal: 20,
+    borderWidth: 1.5, 
+    borderColor: "#E2E8F0",
+    shadowColor: "#000", 
+    shadowOpacity: 0.03, 
+    shadowRadius: 6, 
+    shadowOffset: { width: 0, height: 2 }, 
+    elevation: 2,
+  },
+  opcaoSelecionada: { 
+    borderColor: "#7C3AED", 
+    backgroundColor: "#F5F3FF" 
+  },
+  opcaoTexto: { 
+    fontSize: 15, 
+    fontFamily: "Poppins_400Regular", 
+    color: "#475569" 
+  },
+  opcaoTextoSelecionado: { 
+    color: "#7C3AED", 
+    fontFamily: "Poppins_600SemiBold" 
+  },
   comentario: {
-    backgroundColor: "#fff", borderRadius: 14, padding: 16, fontSize: 13, fontFamily: "Poppins_400Regular",
-    textAlignVertical: "top", marginBottom: 24, minHeight: 80,
-    shadowColor: "#000", shadowOpacity: 0.04, shadowRadius: 6, shadowOffset: { width: 0, height: 2 }, elevation: 1,
+    backgroundColor: "#FFFFFF", 
+    borderRadius: 20, 
+    padding: 18, 
+    fontSize: 14, 
+    fontFamily: "Poppins_400Regular",
+    textAlignVertical: "top", 
+    marginBottom: 24, 
+    minHeight: 100,
+    borderWidth: 1.5,
+    borderColor: "#E2E8F0",
+    color: "#1E293B",
+    shadowColor: "#000", 
+    shadowOpacity: 0.03, 
+    shadowRadius: 6, 
+    shadowOffset: { width: 0, height: 2 }, 
+    elevation: 2,
   },
   botao: {
-    backgroundColor: "#6D28D9", borderRadius: 16, paddingVertical: 18, alignItems: "center",
-    shadowColor: "#6D28D9", shadowOpacity: 0.3, shadowRadius: 12, shadowOffset: { width: 0, height: 6 }, elevation: 4,
+    backgroundColor: "#7C3AED", 
+    borderRadius: 20, 
+    paddingVertical: 18, 
+    alignItems: "center",
+    shadowColor: "#7C3AED", 
+    shadowOpacity: 0.3, 
+    shadowRadius: 10, 
+    shadowOffset: { width: 0, height: 6 }, 
+    elevation: 6,
   },
-  botaoDesabilitado: { backgroundColor: "#C4B5FD", shadowOpacity: 0 },
-  botaoTexto: { color: "#fff", fontSize: 15, fontFamily: "Poppins_600SemiBold" },
+  botaoDesabilitado: { 
+    backgroundColor: "#E2E8F0", 
+    shadowOpacity: 0,
+    elevation: 0,
+  },
+  botaoTexto: { 
+    color: "#FFFFFF", 
+    fontSize: 16, 
+    fontFamily: "Poppins_600SemiBold" 
+  },
 });

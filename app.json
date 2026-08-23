@@ -3,15 +3,10 @@
     "name": "Aura Pulse",
     "slug": "aura-pulse-app",
     "version": "1.0.0",
-    "primaryLanguage": "pt-BR",
-    "languages": [
-      "pt-BR"
-    ],
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
     "scheme": "aurapulseapp",
     "userInterfaceStyle": "automatic",
-    "newArchEnabled": true,
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.aura.pulse"
@@ -23,13 +18,13 @@
         "backgroundImage": "./assets/images/android-icon-background.png",
         "monochromeImage": "./assets/images/android-icon-monochrome.png"
       },
-      "package": "com.aura.pulse",
-      "edgeToEdgeEnabled": true,
-      "predictiveBackGestureEnabled": false
+      "package": "com.aura.pulse"
     },
     "web": {
+      "bundler": "metro",
       "output": "static",
-      "favicon": "./assets/images/favicon.png"
+      "favicon": "./assets/images/favicon.png",
+      "baseUrl": "/aura-pulse-app"
     },
     "plugins": [
       "expo-router",
@@ -51,6 +46,7 @@
       "eas": {
         "projectId": "ff98ce44-0d04-47c6-83cf-adee55b4cc64"
       }
-    }
+    },
+    "owner": "rafael-js"
   }
 }

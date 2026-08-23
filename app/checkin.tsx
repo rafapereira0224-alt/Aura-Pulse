@@ -7,6 +7,7 @@ import {
   Animated,
 } from "react-native";
 import { router } from "expo-router";
+import { Ionicons } from "@expo/vector-icons";
 
 const opcoes = [
   { emoji: "😁", texto: "Excelente" },
@@ -19,12 +20,10 @@ const opcoes = [
 export default function Checkin() {
   const [selecionado, setSelecionado] = useState<string | null>(null);
 
-  // Criando uma animação simples de pulso para cada botão
   const animacao = useRef(new Animated.Value(1)).current;
 
   function handleSelecionar(texto: string) {
     setSelecionado(texto);
-    // Pequeno efeito de "pulo" no botão selecionado
     Animated.sequence([
       Animated.timing(animacao, {
         toValue: 0.95,
@@ -45,6 +44,10 @@ export default function Checkin() {
 
   return (
     <View style={styles.container}>
+      <TouchableOpacity onPress={() => router.back()} style={styles.botaoVoltarTopo}>
+        <Ionicons name="arrow-back" size={24} color="#1E293B" />
+      </TouchableOpacity>
+
       <Text style={styles.titulo}>Como você está terminando o dia hoje?</Text>
 
       <View style={styles.opcoes}>
@@ -53,7 +56,7 @@ export default function Checkin() {
           return (
             <TouchableOpacity
               key={opcao.texto}
-              activeOpacity={0.7}
+              activeOpacity={0.8}
               style={[styles.opcao, ehSelecionado && styles.opcaoSelecionada]}
               onPress={() => handleSelecionar(opcao.texto)}
             >
@@ -75,6 +78,7 @@ export default function Checkin() {
         style={[styles.botao, !selecionado && styles.botaoDesabilitado]}
         onPress={handleContinuar}
         disabled={!selecionado}
+        activeOpacity={0.8}
       >
         <Text style={styles.botaoTexto}>Continuar</Text>
       </TouchableOpacity>
@@ -86,51 +90,80 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 24,
-    paddingTop: 72,
-    backgroundColor: "#F5F3FF",
+    paddingTop: 60,
+    backgroundColor: "#F8FAFC",
+  },
+  botaoVoltarTopo: {
+    marginBottom: 20,
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    backgroundColor: "#FFFFFF",
+    justifyContent: "center",
+    alignItems: "center",
+    borderWidth: 1,
+    borderColor: "#E2E8F0",
   },
   titulo: {
-    fontSize: 20,
+    fontSize: 22,
     fontFamily: "Poppins_700Bold",
-    color: "#1e293b",
-    marginBottom: 32,
-    textAlign: "center",
+    color: "#1E293B",
+    marginBottom: 24,
+    textAlign: "left",
   },
-  opcoes: { gap: 14, marginBottom: 32 },
+  opcoes: { 
+    gap: 12, 
+    marginBottom: 32 
+  },
   opcao: {
     flexDirection: "row",
     alignItems: "center",
-    backgroundColor: "#fff",
+    backgroundColor: "#FFFFFF",
     borderRadius: 20,
-    padding: 20,
-    borderWidth: 2,
-    borderColor: "transparent",
-    elevation: 2,
+    padding: 18,
+    borderWidth: 1.5,
+    borderColor: "#E2E8F0",
     shadowColor: "#000",
-    shadowOpacity: 0.05,
-    shadowRadius: 10,
+    shadowOpacity: 0.03,
+    shadowRadius: 6,
+    shadowOffset: { width: 0, height: 2 },
+    elevation: 2,
   },
-  opcaoSelecionada: { borderColor: "#6D28D9", backgroundColor: "#F3E8FF" },
-  emoji: { fontSize: 32, marginRight: 16 },
+  opcaoSelecionada: { 
+    borderColor: "#7C3AED", 
+    backgroundColor: "#F5F3FF" 
+  },
+  emoji: { 
+    fontSize: 28, 
+    marginRight: 16 
+  },
   opcaoTexto: {
-    fontSize: 16,
-    fontFamily: "Poppins_400Regular",
+    fontSize: 15,
+    fontFamily: "Poppins_500Medium",
     color: "#475569",
   },
-  opcaoTextoSelecionado: { fontFamily: "Poppins_700Bold", color: "#6D28D9" },
-  botao: {
-    backgroundColor: "#6D28D9",
-    borderRadius: 20,
-    paddingVertical: 20,
-    alignItems: "center",
-    elevation: 6,
-    shadowColor: "#6D28D9",
-    shadowOpacity: 0.3,
-    shadowRadius: 15,
+  opcaoTextoSelecionado: { 
+    fontFamily: "Poppins_600SemiBold", 
+    color: "#7C3AED" 
   },
-  botaoDesabilitado: { backgroundColor: "#C4B5FD" },
+  botao: {
+    backgroundColor: "#7C3AED",
+    borderRadius: 20,
+    paddingVertical: 18,
+    alignItems: "center",
+    shadowColor: "#7C3AED",
+    shadowOffset: { width: 0, height: 6 },
+    shadowOpacity: 0.3,
+    shadowRadius: 10,
+    elevation: 6,
+  },
+  botaoDesabilitado: { 
+    backgroundColor: "#E2E8F0",
+    shadowOpacity: 0,
+    elevation: 0,
+  },
   botaoTexto: {
-    color: "#fff",
+    color: "#FFFFFF",
     fontSize: 16,
     fontFamily: "Poppins_600SemiBold",
   },

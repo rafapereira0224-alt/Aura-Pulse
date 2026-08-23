@@ -55,7 +55,7 @@ export default function Login() {
   }
 
   return (
-    <LinearGradient colors={["#6D28D9", "#A855F7", "#F5F3FF"]} style={styles.gradient}>
+    <LinearGradient colors={["#7C3AED", "#9333EA", "#C084FC"]} style={styles.gradient}>
       <KeyboardAvoidingView
         behavior={Platform.OS === "ios" ? "padding" : undefined}
         style={styles.container}
@@ -70,7 +70,7 @@ export default function Login() {
           <TextInput
             style={styles.input}
             placeholder="E-mail"
-            placeholderTextColor="#999"
+            placeholderTextColor="#94A3B8"
             value={email}
             onChangeText={setEmail}
             autoCapitalize="none"
@@ -80,7 +80,7 @@ export default function Login() {
           <TextInput
             style={styles.input}
             placeholder="Senha"
-            placeholderTextColor="#999"
+            placeholderTextColor="#94A3B8"
             value={senha}
             onChangeText={setSenha}
             secureTextEntry
@@ -90,6 +90,7 @@ export default function Login() {
             style={styles.botao}
             onPress={handleEntrar}
             disabled={carregando}
+            activeOpacity={0.8}
           >
             <Text style={styles.botaoTexto}>
               {carregando ? "Entrando..." : "Entrar"}
@@ -118,16 +119,16 @@ const styles = StyleSheet.create({
   },
   logoBox: {
     alignItems: "center",
-    marginBottom: 40,
+    marginBottom: 36,
   },
   emojiLogo: {
-    fontSize: 48,
+    fontSize: 52,
     marginBottom: 8,
   },
   logo: {
-    fontSize: 30,
+    fontSize: 32,
     fontFamily: "Poppins_700Bold",
-    color: "#fff",
+    color: "#FFFFFF",
     textAlign: "center",
   },
   subtitulo: {
@@ -138,7 +139,7 @@ const styles = StyleSheet.create({
     marginTop: 4,
   },
   card: {
-    backgroundColor: "#fff",
+    backgroundColor: "#FFFFFF",
     borderRadius: 24,
     padding: 24,
     shadowColor: "#000",
@@ -148,31 +149,39 @@ const styles = StyleSheet.create({
     elevation: 6,
   },
   input: {
-    backgroundColor: "#F5F3FF",
-    borderRadius: 14,
+    backgroundColor: "#F8FAFC",
+    borderRadius: 16,
     paddingHorizontal: 16,
-    paddingVertical: 14,
+    paddingVertical: 16,
     fontSize: 15,
     fontFamily: "Poppins_400Regular",
     marginBottom: 14,
+    borderWidth: 1,
+    borderColor: "#E2E8F0",
+    color: "#1E293B",
   },
   botao: {
-    backgroundColor: "#6D28D9",
-    borderRadius: 14,
-    paddingVertical: 16,
+    backgroundColor: "#7C3AED",
+    borderRadius: 20,
+    paddingVertical: 18,
     alignItems: "center",
-    marginTop: 4,
+    marginTop: 6,
+    shadowColor: "#7C3AED",
+    shadowOffset: { width: 0, height: 6 },
+    shadowOpacity: 0.3,
+    shadowRadius: 10,
+    elevation: 6,
   },
   botaoTexto: {
-    color: "#fff",
-    fontSize: 15,
+    color: "#FFFFFF",
+    fontSize: 16,
     fontFamily: "Poppins_600SemiBold",
   },
   linkCriarConta: {
     textAlign: "center",
-    color: "#6D28D9",
-    marginTop: 16,
+    color: "#7C3AED",
+    marginTop: 20,
     fontSize: 13,
-    fontFamily: "Poppins_400Regular",
+    fontFamily: "Poppins_600SemiBold",
   },
 });

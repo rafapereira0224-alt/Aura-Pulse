@@ -9,9 +9,11 @@ import {
 } from "@expo-google-fonts/poppins";
 import { View, ActivityIndicator, Platform } from "react-native";
 
-handleNotification: async () => ( {
+// Configuração correta de comportamento das notificações em primeiro plano
+Notifications.setNotificationHandler({
   handleNotification: async () => ({
-    shouldShowAlert: true,
+    shouldShowBanner: true,
+    shouldShowList: true,
     shouldPlaySound: true,
     shouldSetBadge: true,
   }),
@@ -50,7 +52,7 @@ export default function RootLayout() {
 
   if (!fontsLoaded)
     return (
-      <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+      <View style={{ flex: 1, justifyContent: "center", alignItems: "center", backgroundColor: "#F8FAFC" }}>
         <ActivityIndicator size="large" color="#6D28D9" />
       </View>
     );
