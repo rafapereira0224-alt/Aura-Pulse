@@ -24,7 +24,7 @@
       "bundler": "metro",
       "output": "static",
       "favicon": "./assets/images/favicon.png",
-      "baseUrl": ""
+      "baseUrl": "/Aura-Pulse"
     },
     "plugins": [
       "expo-router",
