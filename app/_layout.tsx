@@ -1,15 +1,17 @@
-import { useEffect } from "react";
-import { Slot } from "expo-router";
-import * as Notifications from "expo-notifications";
 import {
-  useFonts,
   Poppins_400Regular,
   Poppins_600SemiBold,
   Poppins_700Bold,
+  useFonts,
 } from "@expo-google-fonts/poppins";
-import { View, ActivityIndicator, Platform } from "react-native";
+import * as Notifications from "expo-notifications";
+import { Slot } from "expo-router";
+import { useEffect } from "react";
+import { ActivityIndicator, Platform, View } from "react-native";
 
-// Configuração correta de comportamento das notificações em primeiro plano
+// Importa o analytics da Vercel de forma segura apenas para Web
+import { Analytics } from '@vercel/analytics/react';
+
 Notifications.setNotificationHandler({
   handleNotification: async () => ({
     shouldShowBanner: true,
@@ -28,7 +30,6 @@ export default function RootLayout() {
 
   useEffect(() => {
     async function setupNotificacoes() {
-      // Verificação para não rodar código nativo na Web
       if (Platform.OS !== "web") {
         const { status } = await Notifications.requestPermissionsAsync();
         if (status === "granted") {
@@ -50,12 +51,26 @@ export default function RootLayout() {
     setupNotificacoes();
   }, []);
 
-  if (!fontsLoaded)
+  if (!fontsLoaded && Platform.OS !== "web") {
     return (
-      <View style={{ flex: 1, justifyContent: "center", alignItems: "center", backgroundColor: "#F8FAFC" }}>
+      <View
+        style={{
+          flex: 1,
+          justifyContent: "center",
+          alignItems: "center",
+          backgroundColor: "#F8FAFC",
+        }}
+      >
         <ActivityIndicator size="large" color="#6D28D9" />
       </View>
     );
+  }
 
-  return <Slot />;
+  return (
+    <>
+      <Slot />
+      {/* O Analytics da Vercel será injetado apenas quando acessado via Web */}
+      {Platform.OS === 'web' && <Analytics />}
+    </>
+  );
 }
